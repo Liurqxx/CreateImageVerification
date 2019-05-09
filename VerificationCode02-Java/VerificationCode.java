@@ -15,23 +15,23 @@ import javax.imageio.ImageIO;
 
 public class VerificationCode {
 
-    private int fontSize = 20;// ÑéÖ¤Âë×ÖÌå £¨Ä¬ÈÏ20£©
+    private int fontSize = 20;// éªŒè¯ç å­—ä½“ ï¼ˆé»˜è®¤20ï¼‰
 
-    private int width = 250;// Í¼Æ¬ÑéÖ¤Âë¿í¶È £¨Ä¬ÈÏ250£©
+    private int width = 250;// å›¾ç‰‡éªŒè¯ç å®½åº¦ ï¼ˆé»˜è®¤250ï¼‰
 
-    private int height = 250;// Í¼Æ¬ÑéÖ¤Âë¸ß¶È£¨Ä¬ÈÏ250£©
+    private int height = 250;// å›¾ç‰‡éªŒè¯ç é«˜åº¦ï¼ˆé»˜è®¤250ï¼‰
 
-    private int charAmt = 5;// ÑéÖ¤Âë×Ö·ûÊıÁ¿ £¨Ä¬ÈÏ5£©
+    private int charAmt = 5;// éªŒè¯ç å­—ç¬¦æ•°é‡ ï¼ˆé»˜è®¤5ï¼‰
 
-    private String keyword;// ÑéÖ¤Âë¹Ø¼ü×Ö
+    private String keyword;// éªŒè¯ç å…³é”®å­—
 
-    private List<Pair> position;// ×ÖºÍ×ø±ê
+    private List<Pair> position;// å­—å’Œåæ ‡
 
-    private String[] codeSet = {"¿ÕÉ½²»¼ûÈË", "µ«ÎÅÈËÓïÏì", "·µ¾°ÈëÉîÁÖ", "¸´ÕÕÇàÌ¦ÉÏ"};
+    private String[] codeSet = {"ç©ºå±±ä¸è§äºº", "ä½†é—»äººè¯­å“", "è¿”æ™¯å…¥æ·±æ—", "å¤ç…§é’è‹”ä¸Š"};
 
-    private int increFactor = width > height ? width / charAmt : height / charAmt;// ÔöÁ¿Òò×Ó
+    private int increFactor = width > height ? width / charAmt : height / charAmt;// å¢é‡å› å­
 
-    // ×ÖÓë×ø±ê×éºÏ
+    // å­—ä¸åæ ‡ç»„åˆ
     public class Pair {
         private String key;
         private List<Integer> value;
@@ -62,26 +62,26 @@ public class VerificationCode {
         }
     }
 
-    public demo() {
-        this.position = new ArrayList<demo.Pair>();
+    public VerificationCode() {
+        this.position = new ArrayList<VerificationCode.Pair>();
     }
 
-    public demo(int width, int height, int charAmt, int fontSize) {
+    public VerificationCode(int width, int height, int charAmt, int fontSize) {
         this.width = width;
         this.height = height;
         this.charAmt = charAmt;
         this.fontSize = fontSize;
-        this.position = new ArrayList<demo.Pair>();
+        this.position = new ArrayList<VerificationCode.Pair>();
     }
 
-    // ²úÉúËæ»úÑÕÉ«
+    // äº§ç”Ÿéšæœºé¢œè‰²
     private Color getRandColor() {
         Color[] colors = {Color.BLACK, Color.BLUE, Color.GRAY, Color.GREEN, Color.ORANGE, Color.PINK, Color.YELLOW};
         Random random = new Random();
         return colors[random.nextInt(colors.length)];
     }
 
-    // »æÖÆ¸ÉÈÅÏß
+    // ç»˜åˆ¶å¹²æ‰°çº¿
     private void drawLine(Graphics2D g) {
         Random random = new Random();
         for (int i = 0; i < 60; i++) {
@@ -94,7 +94,7 @@ public class VerificationCode {
         }
     }
 
-    // »ñÈ¡ÑéÖ¤ÂëÍ¼Æ¬
+    // è·å–éªŒè¯ç å›¾ç‰‡
     public BufferedImage getVeriCode() {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -102,20 +102,20 @@ public class VerificationCode {
         g.fillRect(0, 0, width, height);
         drawLine(g);
         g.setColor(Color.RED);
-        Font font = new Font("ËÎÌå", Font.BOLD, fontSize);
+        Font font = new Font("å®‹ä½“", Font.BOLD, fontSize);
         g.setFont(font);
         Random random = new Random();
         int x, y, step = 0, codeIndex = random.nextInt(codeSet.length), charIndex;
         char[] charSet = codeSet[codeIndex].toCharArray();
         if (charSet.length != charAmt)
-            System.err.println("ÑéÖ¤Âë×Ö·û´®×Ö·ûÊıÁ¿ÓĞÎó£¬ ÇëÖØĞÂÉèÖÃ £º{" + codeSet[codeIndex] + "}");
+            System.err.println("éªŒè¯ç å­—ç¬¦ä¸²å­—ç¬¦æ•°é‡æœ‰è¯¯ï¼Œ è¯·é‡æ–°è®¾ç½® ï¼š{" + codeSet[codeIndex] + "}");
         for (int i = 0; i < charAmt; i++) {
             charIndex = random.nextInt(charAmt);
             x = random.nextInt(width - increFactor) + increFactor / 2;
             y = random.nextInt((height - increFactor) / charAmt) + step + increFactor / 2;
             g.drawString(String.valueOf(charSet[charIndex]), x, y);
             step += (height - increFactor) / charAmt;
-            keyword = String.valueOf(charSet[charIndex]);// ¹Ø¼ü×Ö¸³Öµ
+            keyword = String.valueOf(charSet[charIndex]);// å…³é”®å­—èµ‹å€¼
             List<Integer> range = new ArrayList<Integer>();
             range.add(x);
             range.add(x + fontSize);
@@ -136,7 +136,7 @@ public class VerificationCode {
     }
 
     public static void main(String[] args) {
-        demo util = new demo();
+        VerificationCode util = new VerificationCode();
         for (int i = 0; i < 10; i++) {
             BufferedImage img = util.getVeriCode();
             try {
